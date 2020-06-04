@@ -182,7 +182,7 @@ class Window(QWidget):
         self.display1.move(120, 650)
 
     def buttonclicked(self):
-        self.obj = QObject()
+        # self.obj = QObject()
 
         btn1 = QPushButton(self)
         btn1.setText('开始计算')
