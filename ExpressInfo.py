@@ -118,6 +118,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             wb = Workbook()
             ws = wb.active
             ws.append(['型号', '姓名', '手机', '地址及备注'])
+            rows = ws.rows
+
             ws.append([str(person_per.type), str(person_per.name), str(person_per.phone), context1])
             wb.save(fileads_str + ".xlsx")
 
