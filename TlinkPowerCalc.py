@@ -8,7 +8,7 @@ from PyQt5.QtCore import *
 class Window(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('计算功耗v1.1.1')
+        self.setWindowTitle('计算功耗v1.1.2')
         self.resize(960, 760)
         self.setup_ui()
 
@@ -129,6 +129,12 @@ class Window(QWidget):
         self.t11.setFont(font)
         self.t11.move(410, 580)
 
+        # interval
+        self.labal_interval = QLabel(self)
+        self.labal_interval.setText('发包间隔/ms: ')
+        self.labal_interval.setFont(font)
+        self.labal_interval.move(10, 620)
+
     def line_init(self):
         self.ma1 = QLineEdit(self)
         self.ma1.move(110, 51)
@@ -176,10 +182,13 @@ class Window(QWidget):
         self.us11 = QLineEdit(self)
         self.us11.move(510, 581)
 
+        self.line_interval = QLineEdit(self)
+        self.line_interval.move(130, 621)
+
     def display_init(self):
         self.display1 = QTextBrowser(self)
         self.display1.resize(400, 100)
-        self.display1.move(120, 650)
+        self.display1.move(130, 670)
 
     def buttonclicked(self):
         # self.obj = QObject()
@@ -212,6 +221,13 @@ class Window(QWidget):
             T9_str = self.us9.text()
             T10_str = self.us10.text()
             T11_str = self.us11.text()
+
+            Interval_str = self.line_interval.text()
+
+            if Interval_str == '' or Interval_str == ' ':
+                Interval_float = 1000
+            else:
+                Interval_float = float(Interval_str)
 
             if A1_str == '' or A1_str == ' ':
                 A1_float = 0
@@ -319,13 +335,15 @@ class Window(QWidget):
                        + A10_float * T10_float)/1000
             P2_float = (A11_float * T11_float)/1000
             P3_float = P2_float + P1_float
+            P4_float = P3_float * ((24)/Interval_float)
 
             P1_str = str(P1_float)
             P2_str = str(P2_float)
             P3_str = str(P3_float)
+            P4_str = str(P4_float)
 
 
-            self.display1.setText('工作功耗为'+P1_str+'mA·ms ,休眠功耗为'+P2_str+'mA·ms ,总功耗为'+P3_str+'mA·ms')
+            self.display1.setText('工作功耗为'+P1_str+'mA·ms ,休眠功耗为'+P2_str+'mA·ms ,一个周期功耗为'+P3_str+'mA·ms ,一天功耗为'+P4_str+'mah')
 
         btn1.clicked.connect(cao)
 
