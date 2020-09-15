@@ -78,8 +78,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.write_label.setText(_translate("MainWindow", "已写入信息："))
 
     def btn_clicked(self):
-
-
+        # fileads_str = self.file_ads_edit.text()
+        wb = Workbook()
+        ws = wb.active
+        ws.append(['型号', '姓名', '手机', '地址及备注'])
+        rows = ws.rows
         def cao():
 
             fileads_str = self.file_ads_edit.text()
@@ -115,10 +118,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                                        +'电话：'+str(person_per.phone)+'\n'    \
                                        +'地址及备注：'+context1)
             # echo to excel
-            wb = Workbook()
-            ws = wb.active
-            ws.append(['型号', '姓名', '手机', '地址及备注'])
-            rows = ws.rows
+            # wb = Workbook()
+            # ws = wb.active
+            # ws.append(['型号', '姓名', '手机', '地址及备注'])
+            # rows = ws.rows
 
             ws.append([str(person_per.type), str(person_per.name), str(person_per.phone), context1])
             wb.save(fileads_str + ".xlsx")

@@ -66,19 +66,17 @@ wb = Workbook()  # 创建文件对象
 ws = wb.active  # MC石头CSDN 获取第一个sheet
 # 第一行写时间头
 # ws.append(['销售整理表', '整理于：', time.strftime("%Y年%m月%d日 %H时%M分%S秒", time.localtime())])  # 写入多个单元格
-ws.append(['姓名', '手机', '地址'])
+ws.append(['姓名', '手机', '地址','备注'])
 a = datetime.date.today()
 
-# 准备好剪切板监控
-r = Tk()
-last_string = r.clipboard_get()
 
 #test create excel
 
 while True:
     # 监测频率  MC石头CSDN
-    time.sleep(0.3)
-    string = r.clipboard_get()
+    # time.sleep(0.1)
+    # string = r.clipboard_get()
+    string = input()
     # 对比内容是否有变
     if string != last_string and string != '':
         address = string
@@ -88,7 +86,7 @@ while True:
         ws.append([result[0], result[1], result[2], result[3]])
 
         # 保存到日期命名的Excel
-        wb.save("C:/Users/arc/Desktop/婷大大快递信息整理记录 " + a.__format__('%Y-%m-%d') + ".xlsx")
+        wb.save("C:/Users/Public/Documents/婷大大快递信息整理记录 " + a.__format__('%Y-%m-%d') + ".xlsx")
         print('添加excel内容完成：')
 
         last_string = string
