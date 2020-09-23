@@ -114,7 +114,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             except:
                 print(err_code)
 
-            self.write_display.setText('111111111')
             while 1:
                 time.sleep(1)
                 send = ':READ?'.encode('utf-8') #*IDN?  :READ?
@@ -123,16 +122,16 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 rsv_data = cs.recvfrom(1024)
                 # print(type(rsv_data))
                 print('receive:', rsv_data[0].decode(),type(rsv_data[0].decode()), len((rsv_data[0].decode())))
-                S300_per.Voltage = rsv_data[0][0:9].decode()
-                S300_per.Current = rsv_data[0][10:22].decode()
+                S300_per.Voltage = rsv_data[0][0:7].decode()
+                S300_per.Current = rsv_data[0][8:22].decode()
                 # print('receive-1:', rsv_data[0][0],type(rsv_data[0]))
                 # print('receive-2:', rsv_data[0][1],type(rsv_data[0][0]))
-                # print('Voltage-1:', S300_per.Voltage, type(S300_per.Voltage))
-                # print('Current-2:', S300_per.Current)
+                print('Voltage-1:', S300_per.Voltage, type(S300_per.Voltage))
+                print('Current-2:', S300_per.Current)
 
                 # echo and save
-                self.write_display.setText('电压：' + S300_per.Voltage + '\n' \
-                                           + '电流：' + S300_per.Current)
+                # self.write_display.setText('电压：' + S300_per.Voltage + '\n' \
+                #                            + '电流：' + S300_per.Current)
 
                 ws.append([str(S300_per.Voltage), str(S300_per.Current)])
                 wb.save(fileads_str + ".xlsx")
@@ -154,6 +153,7 @@ if __name__ == '__main__':
     window.show() # 显示主窗体
 
     sys.exit(app.exec_()) # 循环中等待退出程序
+
 
 # import socket
 #
