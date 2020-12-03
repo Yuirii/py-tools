@@ -5,6 +5,9 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QTimer
 from uidemo import Ui_Form
+import time
+from openpyxl import Workbook
+
 
 
 class Pyqt5_Serial(QtWidgets.QWidget, Ui_Form):
@@ -21,6 +24,12 @@ class Pyqt5_Serial(QtWidgets.QWidget, Ui_Form):
         self.lineEdit.setText(str(self.data_num_received))
         self.data_num_sended = 0
         self.lineEdit_2.setText(str(self.data_num_sended))
+
+        self.time_start = 0
+        self.time_end = 0
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.ws.append(['Mac Addr', 'Time Spent/s'])
 
     def init(self):
         # 串口检测按钮
@@ -52,6 +61,13 @@ class Pyqt5_Serial(QtWidgets.QWidget, Ui_Form):
 
         # 清除接收窗口
         self.s2__clear_button.clicked.connect(self.receive_data_clear)
+
+    def excel_create(self):
+        # self.wb = Workbook()
+        # print(type(self.wb))
+        # self.ws = self.wb.active
+        # self.ws.append(['Mac Addr','Time Spent'])
+        pass
 
     # 串口检测
     def port_check(self):
@@ -139,6 +155,9 @@ class Pyqt5_Serial(QtWidgets.QWidget, Ui_Form):
                 num = self.ser.write(input_s)
                 self.data_num_sended += num
                 self.lineEdit_2.setText(str(self.data_num_sended))
+
+                self.time_start = time.time()
+
         else:
             pass
 
@@ -151,6 +170,7 @@ class Pyqt5_Serial(QtWidgets.QWidget, Ui_Form):
             return None
         if num > 0:
             data = self.ser.read(num) # b'\x02
+            # print(type(data))
             num = len(data)
 
             # out_s = ''
@@ -179,11 +199,17 @@ class Pyqt5_Serial(QtWidgets.QWidget, Ui_Form):
                 for i in range(0, len(data)):
                     out_s = out_s + '{:02X}'.format(data[i]) + ' ' # (0x)FF
 
-                print(out_s)
+                # print(out_s)
                 self.s2__receive_text.insertPlainText(out_s)
             else:
                 # 串口接收到的字符串为b'123',要转化成unicode字符串才能输出到窗口中去
                 self.s2__receive_text.insertPlainText(data.decode('iso-8859-1'))
+
+            # time_spent echo
+            self.time_end = time.time()
+            time_spent = self.time_end - self.time_start
+            self.ws.append([self.s3__send_text.toPlainText()[:17], time_spent])
+            self.wb.save(self.s3__send_text.toPlainText()[:17] +".xlsx")
 
             # 统计接收字符的数量
             self.data_num_received += num
