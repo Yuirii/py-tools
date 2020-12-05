@@ -9,8 +9,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QPushButton
+import jieba
+jieba.set_dictionary(".\dict.txt")
 import jieba.posseg
 import jieba.analyse
+jieba.analyse.set_idf_path(".\idf.txt")
 from openpyxl import Workbook
 
 
@@ -87,30 +90,38 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
             fileads_str = self.file_ads_edit.text()
             express_str =self.read_edit.toPlainText().replace('\r', '').replace('\n', '').replace('\t', '').replace(' ','').replace(',','').replace('，','')
-            print(fileads_str,express_str)
+            # print(fileads_str,express_str)
             # process data
             person_per = Person()
 
             # handle message
             words = jieba.posseg.cut(express_str)
             index = 0
+            name_pre = 0
             for word, flag in words:
                 # print('%s %s' % (word, flag))
                 if flag == "eng":
                     person_per.type = word
                 if flag == "nr" and word != "阿玛尼":
-                    person_per.name = word
+                    if name_pre == 0:
+                        person_per.name = word
+                        name_pre = word
+                    # elif name_pre != 0 and len(word) <= 3:
+                    #     person_per.name = word
+                    #     name_pre = word
+                    # else:
+                    #     pass
                 if flag == "m" and len(word) == 11:
                     person_per.phone = word
                 if flag != "nr" and len(word) != 11:
                     person_per.context += word
                     print('%d %s' % (index, person_per.context))
             #
-            print("type", person_per.type)
-            print("name", person_per.name)
-            print("phone", person_per.phone)
+            # print("type", person_per.type)
+            # print("name", person_per.name)
+            # print("phone", person_per.phone)
             context1 = ''.join([str(i) for i in person_per.context])
-            print("context", context1)
+            # print("context", context1)
 
             # echo message
             self.write_display.setText('型号：'+str(person_per.type)+'\n' \
