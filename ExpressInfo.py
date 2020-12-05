@@ -83,6 +83,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         ws = wb.active
         ws.append(['型号', '姓名', '手机', '地址及备注'])
         rows = ws.rows
+        print('times?')
         def cao():
 
             fileads_str = self.file_ads_edit.text()

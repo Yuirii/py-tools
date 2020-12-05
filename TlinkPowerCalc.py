@@ -5,7 +5,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import *
 
 
-class Window(QWidget):
+class Window1(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('计算功耗v1.1.2')
@@ -353,7 +353,7 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
 
-    window = Window()
+    window = Window1()
     window.show()
 
     sys.exit(app.exec_())

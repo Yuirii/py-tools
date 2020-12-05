@@ -2,7 +2,7 @@ __auther__ = 'Yoole'
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QPushButton
-from PyQt5.QtCore import *
+# from PyQt5.QtCore import *
 from openpyxl import Workbook
 import socket
 import time
@@ -188,8 +188,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                     print('Current-2:', S300_per.Current)
 
                     # echo and save
-                    self.write_display.setText('电压：' + S300_per.Voltage + '\n' \
-                                               + '电流：' + S300_per.Current)
+                    self.write_display.setText('电压：' + str(S300_per.Voltage) + '\n' \
+                                               + '电流：' + str(S300_per.Current))
                     if ws.max_row == 1:
                         ws.append([(S300_per.Voltage), (S300_per.Current)])
                         wb.save(fileads_str + ".xlsx")
